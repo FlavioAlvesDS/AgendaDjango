@@ -1,0 +1,13 @@
+{% extends "model-page.html" %}
+{% block content %}
+    <div align="center">
+        <h2>Agendamentos</h2>
+        <!-- Criando um for para retornar a lista de eventos -->
+        <ul style="list-style: none">
+            {% for evento in eventos %}
+                <li>{{ evento.titulo}} - {{ evento.get_data_evento }}</li>
+            {%endfor%}
+        </ul>
+    </div>
+
+{% endblock %}
