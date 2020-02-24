@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 # COMANDO PARA CRIAR UMA TABELA NO BANCO
 class Evento(models.Model):
     titulo = models.CharField(max_length=100)
+    local = models.CharField(blank=True,max_length=100,null=True)
     descricao = models.TextField(blank=True,null=True)
     data_evento = models.DateTimeField(verbose_name='Data do Evento')
     data_craica = models.DateTimeField(auto_now=True,verbose_name='Data de Criacão')

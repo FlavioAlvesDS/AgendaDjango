@@ -7,10 +7,13 @@
         <button type="button">Novo Evento</button>
     </a>
         <!-- Criando um for para retornar a lista de eventos -->
-        <ul style="list-style: none">
+       <ul style="list-style: none">
+
+
             {% for evento in eventos %}
-                <li>{{ evento.titulo}} - {{ evento.get_data_evento }}</li>
+                <li>{{ evento.titulo}}      -      {{ evento.get_data_evento }}   -    {{ evento.local}}</li>
             {%endfor%}
+
         </ul>
 
     </div>
