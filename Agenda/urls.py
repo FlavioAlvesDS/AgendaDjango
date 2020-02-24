@@ -21,5 +21,11 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('agenda/',views.lista_eventos),
     #path('',views.index) #criando a url para ´pagina a funçao index criada na views
-    path('',RedirectView.as_view(url='/agenda/')) #criando a url para ´pagina a funçao index criada na views
+    path('',RedirectView.as_view(url='/agenda/')), #criando a url para ´pagina a funçao index criada na views
+    path('login/',views.login_user),
+    path('login/submit',views.submit_login),
+    path('logout/',views.logout_user),
+    path('agenda/evento/',views.evento),
+    path('agenda/evento/submit',views.submit_evento)
 ]
+
