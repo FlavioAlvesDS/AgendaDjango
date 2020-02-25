@@ -14,6 +14,9 @@ class Evento(models.Model):
     #esse comando adciona o campo usuario a tabela como uma chave estrangeira
     usuario = models.ForeignKey(User,on_delete=models.CASCADE)
 
+    # apos isso digite no seu terminal os comandos
+    # python makemigrations <core> o nome do seu app, vai ser gerado um arquivo
+    # python sqlmigrate core <aqui vai o nome do arquivo criado>
 
     # COMANDO PARA CRIAR A TABELA COM O NOME EVENTO, POIS O DJANGO GERA AUTOMATICO
     class Meta:
@@ -28,6 +31,7 @@ class Evento(models.Model):
         #e chame a função no for no html
         return self.data_evento.strftime('%d/%m/%Y - %H:%M hrs')
 
-    # apos isso digite no seu terminal os comandos
-    # python makemigrations <core> o nome do seu app, vai ser gerado um arquivo
-    # python sqlmigrate core <aqui vai o nome do arquivo criado>
+    #mudando o formato da hora para padrao que o navegador entende para preeencher o form na hora do update
+    def get_data_input_evento(self):
+        return self.data_evento.strftime('%Y-%m-%dT%H:%M')
+
