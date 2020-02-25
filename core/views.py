@@ -1,8 +1,16 @@
+from datetime import datetime,timedelta
+
+
+
+
 from django.core.checks import messages
+from django.http.response import Http404,JsonResponse
 from django.shortcuts import render, redirect
 from core.models import Evento
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import  authenticate,login,logout
+
+
 
 
 #caso nao esteja usuario logado redireciona para a pagina login
@@ -10,9 +18,13 @@ from django.contrib.auth import  authenticate,login,logout
 def login_user(requeste):
    return render(requeste,'login.html')
 
+
+
 def logout_user(request):
     logout(request)
     return redirect('/')
+
+
 
 #função para vautenticar usuario
 def submit_login(request):
@@ -28,14 +40,20 @@ def submit_login(request):
 
             return redirect('/')
 
+
+
 # Criando uma função para mostrar a lista de eventos e depois chamar no html utilizando o for
 @login_required(login_url='/login/')
 def lista_eventos(request, ):
     usuario = request.user
-    evento = Evento.objects.filter(usuario=usuario) # mostrada a lista de eventos daquele usuario logado
+    data_atual = datetime.now() - timedelta(hours=12)
+    evento = Evento.objects.filter(usuario=usuario,# mostrada a lista de eventos daquele usuario logado
+                                  data_evento__gt=data_atual)
     #evento = Evento.objects.all() #objects.all() para mostrar todos os eventos "poderia filtrar utilizando objects.get(e o paramentro aqui)"
     dados = {'eventos':evento}
     return render(request,'agenda.html',dados)
+
+
 
 @login_required(login_url='/login/')
 def evento(request):
@@ -76,14 +94,31 @@ def submit_evento(request):
                                   local=local
                                   )
     return redirect('/')
+
+
+
 @login_required(login_url='/login/')
 #função para deletar um evento aceita excluir apenas eventos de quem esta logado
 def delete_evento(request,id_evento):
     usuario = request.user
-    evento =  Evento.objects.get(id=id_evento)
+    try:
+        evento =  Evento.objects.get(id=id_evento)
+    except Exception:
+        raise Http404()
     if usuario == evento.usuario:
        evento.delete()
+    else:
+        raise Http404()
     return redirect('/')
+
+
+#a funçaõ abaixo retorna uma lista json
+@login_required(login_url='/login/')
+def json_lista(request):
+    usuario = request.user
+    evento = Evento.objects.filter(usuario=usuario).values('id','titulo')#retornara uma lista do tipo json
+    return JsonResponse(list(evento),safe=False)
+
 
 #outra maneira de redirecionar a pagina
 #{
